@@ -72,6 +72,36 @@ class FindYear:
     # complexity: n*m
     # with n is size of data and m is size of (max_year-min_year)    
 
+    def maximum_population_by_dict(self, data):
+        dict_birth={}
+        dict_death={}
+        min_y=10000
+        max_y=0
+        #O(n)
+        for _, birth, death in data: 
+            if birth not in dict_birth.keys():
+                dict_birth[birth]=1
+            else:
+                dict_birth[birth] +=1
+            if death not in dict_death.keys():
+                dict_death[death]=1
+            else:
+                dict_death[death] +=1
+
+            if birth<min_y:
+                min_y=birth
+            if death>max_y:
+                max_y=death
+        population=year=max_p=0
+        #O(m)
+        for y in range(min_y, max_y):
+            population = population + dict_birth.get(y, 0) - dict_death.get(y, 0)
+            if population>max_p:
+                year=y
+                max_p=population
+        return max_p, year
+#the complexity is O(n+m) = O(n)
+
 if __name__ == "__main__":
     #load file
     FILE_NAME='./data_small.json'
@@ -84,4 +114,4 @@ if __name__ == "__main__":
     print(solution.maximumPopulation(data))
     print(solution.maximumPopulation_by_iterate(data))
     print(solution.maximum_population_by_count_population(data))
-
+    print(solution.maximum_population_by_dict(data)[1])
